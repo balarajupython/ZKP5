@@ -881,7 +881,7 @@ func (fq Fq) Neg(a *big.Int) *big.Int {
 	return new(big.Int).Mod(m, fq.Q)
 }
 // function body
-func flattening(s0 *big.Int) *big.Int {
+func Flattening(s0 *big.Int) *big.Int {
    s3 := exp3(s0) // 
    s4 := s3.Add(s0, s3) // 
    s5 := s4.Add(s4, big.NewInt(5))
