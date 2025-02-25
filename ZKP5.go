@@ -25,6 +25,13 @@ func NewPolynomialField(f Fq) PolynomialField {
 		f,
 	}
 }
+// NewFq generates a new Fq
+func NewFq1() Fq {
+	q, _ := new(big.Int).SetString("21888242871839275222246405745257275088548364400416034343698204186575808495617", 10)
+	return Fq{
+		q,
+	}
+}
 
 func (pf PolynomialField) R1CSToQAP(a, b, c [][]*big.Int) ([][]*big.Int, [][]*big.Int, [][]*big.Int, []*big.Int) {
 	aT := Transpose(a)
