@@ -85,6 +85,35 @@ func GetProofResponseFromProof(proof Proof) ProofResponse {
 	}
 	return proofResponse
 }
+func (circ *Circuit) calculateWitness(privateInputs []*big.Int, publicInputs []*big.Int) ([]*big.Int, error) {
+   if len(privateInputs) != len(circ.PrivateInputs) {
+       return []*big.Int{}, errors.New("given privateInputs != circuit.PublicInputs")
+   }
+   if len(publicInputs) != len(circ.PublicInputs) {
+       return []*big.Int{}, errors.New("given publicInputs != circuit.PublicInputs")
+   }
+   w := ArrayOfBigZeros(len(circ.Signals))
+   w[0] = big.NewInt(int64(1))
+   for i, input := range publicInputs {
+       w[i+1] = input
+   }
+   for i, input := range privateInputs {
+       w[i+len(publicInputs)+1] = input
+   }
+   for _, constraint := range circ.Constraints {
+       if constraint.Op == "in" {
+       } else if constraint.Op == "+" {
+           w[indexInArray(circ.Signals, constraint.Out)] = new(big.Int).Add(grabVar(circ.Signals, w, constraint.V1), grabVar(circ.Signals, w, constraint.V2))
+       } else if constraint.Op == "-" {
+           w[indexInArray(circ.Signals, constraint.Out)] = new(big.Int).Sub(grabVar(circ.Signals, w, constraint.V1), grabVar(circ.Signals, w, constraint.V2))
+       } else if constraint.Op == "*" {
+           w[indexInArray(circ.Signals, constraint.Out)] = new(big.Int).Mul(grabVar(circ.Signals, w, constraint.V1), grabVar(circ.Signals, w, constraint.V2))
+       } else if constraint.Op == "/" {
+           w[indexInArray(circ.Signals, constraint.Out)] = new(big.Int).Div(grabVar(circ.Signals, w, constraint.V1), grabVar(circ.Signals, w, constraint.V2))
+       }
+   }
+   return w, nil
+}
 func GenerateTrustedSetup(witnessLength int, circuit Circuit, u, v, w [][]*big.Int, alpha *big.Int, betta *big.Int, gamma *big.Int, delta *big.Int, X_value *big.Int, R_value *big.Int, S_value *big.Int) (Setup, error) {
 
 	var setup Setup
