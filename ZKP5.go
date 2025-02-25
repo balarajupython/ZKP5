@@ -1034,7 +1034,7 @@ func (p *Parser) Parse() (*Circuit, error) {
    }
    return circuits["main"], nil
 }
-func (circ *Circuit) calculateWitness(privateInputs []*big.Int, publicInputs []*big.Int) ([]*big.Int, error) {
+func (circ *Circuit) CalculateWitness(privateInputs []*big.Int, publicInputs []*big.Int) ([]*big.Int, error) {
    if len(privateInputs) != len(circ.PrivateInputs) {
        return []*big.Int{}, errors.New("given privateInputs != circuit.PublicInputs")
    }
