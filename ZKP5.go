@@ -880,13 +880,7 @@ func (fq Fq) Neg(a *big.Int) *big.Int {
 	m := new(big.Int).Neg(a)
 	return new(big.Int).Mod(m, fq.Q)
 }
-// function body
-func Flattening(s0 *big.Int) *big.Int {
-   s3 := exp3(s0) // 
-   s4 := s3.Add(s0, s3) // 
-   s5 := s4.Add(s4, big.NewInt(5))
-   return s5
-}
+
 func TrimSpaceNewlineInString() string {
    str := "func exp3(private a):LF\tb = a * aLF\tc = a * bLF\treturn cLFLFfunc main(private s0, public s1):LF\ts3 = exp3(s0)LF\ts4 = s3 + s0LF\ts5 = s4 + 5LF\tequals(s1, s5)LF\tout = 1 * 1"
    re := regexp.MustCompile(`LF`)
